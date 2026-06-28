@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium QA Inference</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>QA Engine</h1>
+            <p>Advanced Transformer Extractive & Generative Inference</p>
+        </header>
+        
+        <main>
+            <div class="glass-panel">
+                <form id="qa-form">
+                    <div class="form-group">
+                        <label for="model-type">Model Type</label>
+                        <div class="custom-select-wrapper">
+                            <select id="model-type" name="model_type">
+                                <option value="extractive">Extractive QA (SQuAD v2)</option>
+                                <option value="generative" selected>Generative QA (Hybrid Decoder)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="context">Context Passage</label>
+                        <textarea id="context" name="context" rows="6" placeholder="Enter the context passage here..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="question">Question</label>
+                        <input type="text" id="question" name="question" placeholder="Ask a question about the context..." required>
+                    </div>
+
+                    <div class="accordion">
+                        <div class="accordion-header" id="advanced-settings-toggle">
+                            <span>Advanced Settings</span>
+                            <span class="icon">&#9660;</span>
+                        </div>
+                        <div class="accordion-content" id="advanced-settings">
+                            <!-- Shared Setting -->
+                            <div class="setting-group">
+                                <label for="max-length">Max Input Length <span class="val-display" id="max-length-val">256</span></label>
+                                <input type="range" id="max-length" name="max_length" min="64" max="512" value="256">
+                            </div>
+
+                            <!-- Extractive Settings -->
+                            <div id="extractive-settings" class="settings-panel hidden">
+                                <div class="setting-group">
+                                    <label for="doc-stride">Doc Stride <span class="val-display" id="doc-stride-val">64</span></label>
+                                    <input type="range" id="doc-stride" name="doc_stride" min="16" max="256" value="64">
+                                </div>
+                                <div class="setting-group">
+                                    <label for="n-best">N-Best <span class="val-display" id="n-best-val">20</span></label>
+                                    <input type="range" id="n-best" name="n_best" min="1" max="50" value="20">
+                                </div>
+                                <div class="setting-group">
+                                    <label for="max-answer-length">Max Answer Length <span class="val-display" id="max-answer-length-val">30</span></label>
+                                    <input type="range" id="max-answer-length" name="max_answer_length" min="5" max="100" value="30">
+                                </div>
+                                <div class="setting-group checkbox-group">
+                                    <label>No-Answer Threshold</label>
+                                    <input type="number" id="ext-no-answer-threshold" name="no_answer_threshold_ext" step="0.1" value="0.0">
+                                </div>
+                            </div>
+
+                            <!-- Generative Settings -->
+                            <div id="generative-settings" class="settings-panel">
+                                <div class="setting-group">
+                                    <label for="beam-size">Beam Size <span class="val-display" id="beam-size-val">4</span></label>
+                                    <input type="range" id="beam-size" name="beam_size" min="1" max="10" value="4">
+                                </div>
+                                <div class="setting-group">
+                                    <label for="max-new-tokens">Max New Tokens <span class="val-display" id="max-new-tokens-val">32</span></label>
+                                    <input type="range" id="max-new-tokens" name="max_new_tokens" min="5" max="128" value="32">
+                                </div>
+                                <div class="setting-group">
+                                    <label for="length-penalty">Length Penalty <span class="val-display" id="length-penalty-val">1.0</span></label>
+                                    <input type="range" id="length-penalty" name="length_penalty" min="0.1" max="2.0" step="0.1" value="1.0">
+                                </div>
+                                <div class="setting-group checkbox-group">
+                                    <input type="checkbox" id="enable-no-answer-gate" name="enable_no_answer_gate" checked>
+                                    <label for="enable-no-answer-gate">Enable No-Answer Gate</label>
+                                </div>
+                                <div class="setting-group checkbox-group" id="gate-threshold-container">
+                                    <label>No-Answer Threshold</label>
+                                    <input type="number" id="gen-no-answer-threshold" name="no_answer_threshold_gen" step="0.1" value="0.0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="submit-btn" class="glow-button">Generate Answer</button>
+                </form>
+            </div>
+            
+            <div id="result-container" class="glass-panel result-panel hidden">
+                <div class="loader hidden" id="loader"></div>
+                <div id="result-content">
+                    <h2>Generated Answer</h2>
+                    <p id="answer-text" class="highlight-text"></p>
+                    <div id="stats-container" class="stats"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
